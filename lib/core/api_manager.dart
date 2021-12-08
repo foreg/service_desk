@@ -11,4 +11,14 @@ class APIManager {
     // Загрузка пользователя из local
     return;
   }
+
+  Future<Map<String, dynamic>> login({
+    required String login,
+    required String password,
+  }) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return {
+      'userId': '123',
+    };
+  }
 }
