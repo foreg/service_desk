@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:service_desk/core/notification_manager.dart';
+import 'package:service_desk/core/api_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationManager().init();
+  await APIManager().init();
   runApp(const MyApp());
 }
 
