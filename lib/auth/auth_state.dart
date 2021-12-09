@@ -29,7 +29,13 @@ class AuthState extends ChangeNotifier {
       _updateState(user: event.user, error: null);
     } else if (event is FailureAuthEvent) {
       _updateState(user: null, error: event.error);
+    } else if (event is LogoutAuthEvent) {
+      _updateState(user: null, error: null);
     }
+  }
+
+  Future<void> logout() {
+    return _authRepository.logout();
   }
 
   void _updateState({User? user, String? error}) {
