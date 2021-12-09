@@ -6,6 +6,7 @@ import 'package:service_desk/auth/auth_state.dart';
 import 'package:service_desk/core/notification_manager.dart';
 import 'package:service_desk/core/api_manager.dart';
 import 'package:service_desk/home/home_page.dart';
+import 'package:service_desk/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: theme,
       initialRoute: AuthPage.routeName,
       routes: {
         AuthPage.routeName: (context) => const AuthPage(),

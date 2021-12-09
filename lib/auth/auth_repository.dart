@@ -19,6 +19,10 @@ class FailureAuthEvent extends AuthEvent {
   final String error;
 }
 
+class LogoutAuthEvent extends AuthEvent {
+  const LogoutAuthEvent();
+}
+
 class AuthRepository {
   final _controller = StreamController<AuthEvent>();
   final _api = APIManager();
@@ -33,6 +37,10 @@ class AuthRepository {
     } else {
       _controller.add(const FailureAuthEvent('An error has occurred'));
     }
+  }
+
+  Future<void> logout() async {
+    _controller.add(const LogoutAuthEvent());
   }
 
   void dispose() {

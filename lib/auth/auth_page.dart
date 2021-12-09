@@ -16,11 +16,8 @@ class _AuthPageState extends State<AuthPage> {
   final _loginController = TextEditingController();
   final _passwordController = TextEditingController();
   AuthState? authState;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  bool submitEnabled = false;
+  bool isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -37,32 +34,90 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: _loginController),
-            TextField(controller: _passwordController),
-            if (authState?.error != null) Text(authState!.error!),
-            ElevatedButton(
-              onPressed: _onSubmit,
-              child: const Text('Login'),
+            const Spacer(flex: 3),
+            Text(
+              'Clarity',
+              style: theme.textTheme.headline3,
             ),
+            const Spacer(flex: 2),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Войдите в аккаунт:',
+                style: theme.textTheme.bodyText2,
+              ),
+            ),
+            const SizedBox(height: 30),
+            TextField(
+              controller: _loginController,
+              onChanged: _onChanged,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(hintText: 'Логин'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              onChanged: _onChanged,
+              textInputAction: TextInputAction.done,
+              onEditingComplete: submitEnabled ? _onSubmit : null,
+              decoration: const InputDecoration(hintText: 'Пароль'),
+            ),
+            if (authState?.error != null) ...[
+              const SizedBox(height: 16),
+              Text(authState!.error!),
+            ],
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: submitEnabled ? _onSubmit : null,
+              child: isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator.adaptive(
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text('Войти'),
+            ),
+            const Spacer(flex: 4),
           ],
         ),
       ),
     );
   }
 
-  void _onSubmit() {
-    authState?.login(
+  void _onSubmit() async {
+    setState(() {
+      isLoading = true;
+    });
+    await authState?.login(
         login: _loginController.text, password: _passwordController.text);
   }
 
   void _onAuthStateChange() {
+    if (authState?.user != null || authState?.error != null) {
+      setState(() {
+        isLoading = false;
+      });
+    }
     if (authState?.isLoggedIn ?? false) {
       Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+    }
+  }
+
+  void _onChanged(String value) {
+    final valid =
+        _loginController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+    if (valid != submitEnabled) {
+      setState(() {
+        submitEnabled = valid;
+      });
     }
   }
 }
