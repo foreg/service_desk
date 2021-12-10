@@ -91,7 +91,7 @@ class _MyHomePageState extends State<HomePage> {
   }
 
   void _onAddTap() {
-    //
+    Navigator.pushNamed(context, 'add_request');
   }
 
   void _logout() {
