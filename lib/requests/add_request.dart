@@ -15,6 +15,9 @@ class _MyRequestPageState extends State<RequestPage> {
   List<Map<String, String>> addressOptions = [];
   String address = "1";
 
+  final _titleController = TextEditingController();
+  final _textController = TextEditingController();
+
   Future<String> getBuildingData() async {
     var res = await APIManager().building();
 
@@ -36,25 +39,39 @@ class _MyRequestPageState extends State<RequestPage> {
         appBar: AppBar(
           title: const Text('Создание заявки'),
         ),
-        body: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
-          Center(
-            child: DropdownButton<String>(
-              value: address,
-              icon: const Icon(Icons.arrow_downward),
-              style: const TextStyle(color: Colors.deepPurple),
-              onChanged: (newValue) {
-                setState(() {
-                  address = newValue!;
-                });
-              },
-              items: addressOptions.map((Map<String, String> item) {
-                return DropdownMenuItem(
-                  child: Text(item['building_title'] as String),
-                  value: item['id'].toString(),
-                );
-              }).toList(),
-            ),
-          )
+        body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
+          const SizedBox(height: 30),
+          DropdownButton<String>(
+            value: address,
+            isExpanded: true,
+            icon: const Icon(Icons.arrow_drop_down_outlined),
+            onChanged: (newValue) {
+              setState(() {
+                address = newValue!;
+              });
+            },
+            items: addressOptions.map((Map<String, String> item) {
+              return DropdownMenuItem(
+                child: Text(item['adres'] as String),
+                value: item['id'].toString(),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 30),
+          TextField(
+            controller: _titleController,
+            // onChanged: _onChanged,
+            textInputAction: TextInputAction.next,
+            decoration: const InputDecoration(hintText: 'Тема заявки'),
+          ),
+          const SizedBox(height: 30),
+          TextField(
+            controller: _textController,
+            // onChanged: _onChanged,
+            textInputAction: TextInputAction.next,
+            decoration: const InputDecoration(hintText: 'Описание проблемы'),
+          ),
+          const SizedBox(height: 30),
         ]));
   }
 }
