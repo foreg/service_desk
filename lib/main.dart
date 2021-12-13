@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:service_desk/auth/auth_page.dart';
 import 'package:service_desk/auth/auth_repository.dart';
 import 'package:service_desk/auth/auth_state.dart';
+import 'package:service_desk/requests/add_request.dart';
 import 'package:service_desk/core/notification_manager.dart';
 import 'package:service_desk/core/api_manager.dart';
 import 'package:service_desk/home/home_page.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       routes: {
         AuthPage.routeName: (context) => const AuthPage(),
         HomePage.routeName: (context) => const HomePage(),
+        RequestPage.routeName: (context) => const RequestPage(),
       },
     );
   }
